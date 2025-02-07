@@ -123,7 +123,7 @@ COPY . .
 
 # Set Chrome path
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
-ENV PUPPETEER_SKIP_DOWNLOAD="true"
+
 
 # Expose port
 EXPOSE 5000
