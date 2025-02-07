@@ -97,6 +97,42 @@
 
 
 
+# FROM node:20-slim
+
+# # Install dependencies and Chrome
+# RUN apt-get update && apt-get install -y \
+#     wget \
+#     gnupg \
+#     ca-certificates \
+#     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+#     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+#     && apt-get update \
+#     && apt-get install -y google-chrome-stable \
+#     && rm -rf /var/lib/apt/lists/*
+
+# WORKDIR /usr/src/app
+
+# # Copy package files first for better caching
+# COPY package*.json ./
+
+# # Install dependencies
+# RUN npm install
+
+# # Copy rest of the application
+# COPY . .
+
+# # Set Chrome path
+# ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
+# ENV PUPPETEER_SKIP_DOWNLOAD="true"
+
+# # Expose port
+# EXPOSE 5000
+
+# # Start command
+# CMD ["node", "server.js"]
+
+
+
 FROM node:20-slim
 
 # Install dependencies and Chrome
@@ -105,27 +141,28 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     ca-certificates \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
-# Copy package files first for better caching
+# Copy package files first
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --omit=dev
 
-# Copy rest of the application
+# Copy the rest of the app
 COPY . .
 
-# Set Chrome path
-ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
+# Set environment variables
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome"
+ENV PUPPETEER_SKIP_DOWNLOAD="true"
 
-# Expose port
+# Expose the port
 EXPOSE 5000
 
-# Start command
+# Start the application
 CMD ["node", "server.js"]
