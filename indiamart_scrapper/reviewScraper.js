@@ -378,12 +378,21 @@ async function scrapeReviews(url) {
     let browser;
     try {
         browser = await puppeteer.launch({
-            headless: true, // Ensure headless mode
-            args: ["--no-sandbox", "--disable-setuid-sandbox"], // Required for Render
-          });
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process',
+                '--disable-gpu' // <== Reduce memory usage
+            ]
+        });
 
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+        await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
 
         console.log("Page loaded, scraping reviews...");
 
@@ -393,7 +402,6 @@ async function scrapeReviews(url) {
                 location: review.querySelector(".FM_f17 span:nth-child(3)")?.innerText.trim() || "N/A",
                 date: review.querySelector(".FM_f16.FM_c7 span:first-child")?.innerText.trim() || "N/A",
                 product: review.querySelector(".FM_f16.FM_c7 span:nth-child(3)")?.innerText.replace("Product Name : ", "").trim() || "N/A",
-                rating: review.querySelector(".FM_flsRt") ? parseInt(review.querySelector(".FM_flsRt").style.width) / 20 : "N/A",
                 reviewText: review.querySelector(".FM_m15.FM_C0")?.innerText.trim() || "N/A"
             }));
         });
