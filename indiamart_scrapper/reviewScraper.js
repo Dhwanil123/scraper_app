@@ -277,8 +277,7 @@ async function scrapeReviews(url) {
     try {
         // Launch browser without specifying executable path
         browser = await puppeteer.launch({
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
-
+            executablePath: "/usr/bin/google-chrome-stable", // Use system-installed Chrome
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
@@ -286,10 +285,10 @@ async function scrapeReviews(url) {
                 '--disable-accelerated-2d-canvas',
                 '--no-first-run',
                 '--no-zygote',
-                '--single-process', // Recommended for containerized environments
-                '--headless'
+                '--single-process',
+                '--headless=new'
             ],
-            headless: 'new'
+            headless: "new"
         });
 
         const page = await browser.newPage();

@@ -4,7 +4,6 @@ const Review = require("./db");  // Import MongoDB model
 const scrapeReviews = require("./indiamart_scrapper/reviewScraper");
 
 process.env.PUPPETEER_CACHE_DIR = join(__dirname, ".cache", "puppeteer");
-process.env.PUPPETEER_EXECUTABLE_PATH = "/opt/render/.cache/puppeteer/chrome/linux-132.0.6834.110/chrome-linux64/chrome";
 
 const app = express();
 app.use(express.json());

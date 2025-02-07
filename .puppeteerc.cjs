@@ -6,6 +6,8 @@ const {join} = require('path');
 module.exports = {
 
   cacheDirectory: join(__dirname, '.cache', 'puppeteer'),
-  browserRevision: '132.0.6834.110'
+  browserRevision: '132.0.6834.110',
+  executablePath: "/usr/bin/google-chrome-stable",
+
 
 };
