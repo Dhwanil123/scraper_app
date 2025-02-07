@@ -4,7 +4,7 @@ const Review = require("./db");  // Import MongoDB model
 const scrapeReviews = require("./indiamart_scrapper/reviewScraper");
 
 
-await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+
 process.env.PUPPETEER_CACHE_DIR = join(__dirname, ".cache", "puppeteer");
 
 const app = express();
