@@ -49,8 +49,5 @@ services:
     plan: free
     branch: main
     buildCommand: |
-      npm install && npx puppeteer browsers install chrome
+      npm install
     startCommand: node server.js
-    envVars:
-      - key: PUPPETEER_EXECUTABLE_PATH
-        value: /opt/render/.cache/puppeteer/chrome/linux-133.0.6943.53/chrome-linux64/chrome
